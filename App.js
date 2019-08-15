@@ -4,40 +4,47 @@ import './App.css';
 
 function App() {
  
-  
+  let s=true;
   const [task,setTask]=useState('')//used for changing state of input
   const[count,setCount]=useState(0)//for storing array values
   const [array,setArray]=useState([])
-  const [checkingArr,setCheckingArr]=useState([])
+ //e const [checkingArr,setCheckingArr]=useState([false])
   const [checking,setChecking]=useState('')
-  const handleSubmit=()=>{setArray([...array,task])
-                         }
-  const isChecked=()=>{
-                        for(let i=0;i<array.length;i++)
-                        {
-                          if(checking==array[i]) {
-                            if(checkingArr[i]=='1'){checkingArr[i]='0'; alert(checkingArr[i]);}
-                            else{checkingArr[i]='1';alert(checkingArr[i])}
-                          }
+  const handleSubmit=()=>{setArray(array.concat({TASK : task,checkstatus: false}))}
+ const handleDelete=()=>{setArray(array.filter(function(num,index){if(num.checkstatus==false)return num;}));}
+                         
+  const isChecked=(i)=>{ setArray(array.map(function(num,index){if(index===i){num.checkstatus=!(num.checkstatus);return num;}
+                                                                    else return num;}));
+                        setArray(array.sort(function(num,index){if(num.checkstatus==false)return 1;}));alert(array);
+                       }
+  const changePosition=()=>{
+    
+  }                     
+                           
+                        
 
-                        }
-  }
+                        
   
-                         const element=array.map((num)=><li><input type="checkbox" value={num} onChange={(e)=>{setChecking(e.target.value)
-                        isChecked();alert(checking)}}/> {num}</li>)
+  
+                       const element=array.map((num,i)=><li> <input type="checkbox" 
+                                                                    checked={num.checkstatus}
+                                                                     onChange={()=>{isChecked(i);
+                                                                  
+                                                                                    } }/>{num.TASK}</li>);//how error gone??ooooo it was toooo simple in onchange i passed i so my isChecked took that i it was unaware about the i that shld b passed now error is solved good
 //const Delete=()=>
+console.log(array);
   return (
     <div className="App">
-  <form>
+
     <label>
-     Task:
+     Task: 
       <input type="text" name="Task" placeholder="Add Task" onChange={(e)=>setTask(e.target.value)}/>
     </label>
-  </form>
+ 
  
   <button onClick={handleSubmit}>Add</button>
-  <button>Delete</button>
-  <ul>{element}</ul>
+  <button onClick={handleDelete}>Delete</button>
+ <ul>{element}</ul>
  
    
     </div>
